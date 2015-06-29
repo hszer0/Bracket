@@ -1,10 +1,9 @@
-__author__ = 'Patrick.Liem'
-
 import unittest
 from BracketDB import Database
 
 
 class BracketDBTests(unittest.TestCase):
+
     def setUp(self):
         self.db = Database("test.db")
 
@@ -20,7 +19,8 @@ class BracketDBTests(unittest.TestCase):
         self.db.c.execute("select name from participants")
         self.db.c.execute("select id, name, date from tournaments")
         self.db.c.execute("select tid, name from contenders")
-        self.db.c.execute("select tid, round, name1, name2, score1, score2 from scores")
+        self.db.c.execute(
+            "select tid, round, name1, name2, score1, score2 from scores")
 
     def test_add_and_remove_participant(self):
         """Participant can be added and removed"""
@@ -33,7 +33,7 @@ class BracketDBTests(unittest.TestCase):
         row = self.db.c.fetchone()
         self.assertEqual("Patrick", row[0])
 
-        #test for removing
+        # test for removing
         self.db.remove_participant("Patrick")
         self.db.c.execute("select name from participants")
         self.assertIsNone(self.db.c.fetchone())
@@ -88,7 +88,8 @@ class BracketDBTests(unittest.TestCase):
         self.db.add_participant("Simone")
         self.db.add_participant("Anke")
 
-        self.assertEqual([("Anke",), ("Simone",), ("Steven",)], self.db.get_participants("e"))
+        self.assertEqual(
+            [("Anke",), ("Simone",), ("Steven",)], self.db.get_participants("e"))
         for case in (("e", [("Anke",), ("Simone",), ("Steven",)]), ("t", [('Patrick',), ('Steven',)]), ("q", [])):
             with self.subTest():
                 self.assertEqual(case[1], self.db.get_participants(case[0]))
@@ -100,7 +101,8 @@ class BracketDBTests(unittest.TestCase):
         self.db.add_participant("Simone")
         self.db.add_participant("Anke")
 
-        self.assertEqual([("Anke",), ("Simone",), ("Steven",)], self.db.get_participants("e"))
+        self.assertEqual(
+            [("Anke",), ("Simone",), ("Steven",)], self.db.get_participants("e"))
         for case in (("ne", [("Simone",)]), ("ke", [('Anke',)]), ("qe", [])):
             with self.subTest():
                 self.assertEqual(case[1], self.db.get_participants(case[0]))
@@ -109,13 +111,15 @@ class BracketDBTests(unittest.TestCase):
         """Retrieve all tournaments"""
         id1 = self.db.add_tournament("UT2k4", "2014-01-01")
         id2 = self.db.add_tournament("Worms", "2013-01-01")
-        self.assertEqual(self.db.get_all_tournaments(), [(id1, 'UT2k4', '2014-01-01'), (id2, 'Worms', '2013-01-01')])
+        self.assertEqual(self.db.get_all_tournaments(), [
+                         (id1, 'UT2k4', '2014-01-01'), (id2, 'Worms', '2013-01-01')])
 
     def test_get_all_tournaments_from_date(self):
         """Retrieve all tournaments from certain date"""
         id1 = self.db.add_tournament("UT2k4", "2014-01-01")
         self.db.add_tournament("Worms", "2013-01-01")
-        self.assertEqual(self.db.get_all_tournaments("2013-05-09"), [(id1, 'UT2k4', '2014-01-01')])
+        self.assertEqual(
+            self.db.get_all_tournaments("2013-05-09"), [(id1, 'UT2k4', '2014-01-01')])
 
     def test_get_all_scores_from_tournament(self):
         """Retrieve all scores from tournament"""
@@ -131,12 +135,12 @@ class BracketDBTests(unittest.TestCase):
         """Update score"""
         self.db.add_game(1, 0, "Patrick", "Steven")
         self.db.update_score(1, 0, "Patrick", "Steven", 1, 2)
-        self.db.c.execute("select * from scores where tid = 1 and round = 0 and name1 = 'Patrick' and name2 = 'Steven'")
+        self.db.c.execute(
+            "select * from scores where tid = 1 and round = 0 and name1 = 'Patrick' and name2 = 'Steven'")
         row = self.db.c.fetchone()
         self.assertEqual(row[4], 1)
         self.assertEqual(row[5], 2)
 
-#TODO: Swap contenders
-#TODO: Generate round 1
-#TODO: Generate next round
-
+# TODO: Swap contenders
+# TODO: Generate round 1
+# TODO: Generate next round
