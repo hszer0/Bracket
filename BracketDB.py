@@ -34,6 +34,11 @@ class Database(object):
         self.c.execute(
             "delete from contenders where tid = ? and name = ?", (tid, name))
 
+    def get_contenders(self, tid, s):
+        self.c.execute(
+            "select tid, name from contenders where tid = ? and name like ? order by name", (tid, "%" + s + "%"))
+        return self.c.fetchall()
+
     def add_game(self, tid, rnd, name1, name2):
         self.c.execute("insert into scores (tid, round, name1, name2) values (?, ?, ?, ?)",
                        (tid, rnd, name1, name2))

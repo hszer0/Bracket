@@ -12,6 +12,7 @@ class BracketDBTests(unittest.TestCase):
         self.db.c.execute("delete from tournaments")
         self.db.c.execute("delete from contenders")
         self.db.c.execute("delete from scores")
+        self.db.c.execute("update sqlite_sequence set seq = (select max(id) from tournaments) WHERE name='tournaments'")
         self.db.close_connection()
 
     def test_tables_and_columns(self):
@@ -61,6 +62,14 @@ class BracketDBTests(unittest.TestCase):
         self.db.remove_tournament(tid)
         self.db.c.execute("select * from contenders")
         self.assertIsNone(self.db.c.fetchone())
+
+    def test_get_contenders(self):
+        tid = self.db.add_tournament("UT2k4", "2014-01-01")
+        self.db.add_contender(tid, "Patrick")
+        self.db.add_contender(tid, "Simone")
+        self.db.add_contender(tid, "Anke")
+        self.db.add_contender(tid, "Steven")
+        self.assertEqual([(1, "Anke"), (1, "Simone"), (1, "Steven")], self.db.get_contenders(tid, "e"))
 
     def test_add_and_remove_game(self):
         # test for adding
