@@ -56,3 +56,7 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#sublime
+Bracket.sublime-project
+Bracket.sublime-workspace
