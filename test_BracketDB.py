@@ -154,9 +154,3 @@ class BracketDBTests(unittest.TestCase):
             "select count(*) from scores where tid = 1 and round = 0 and name1 = 'Patrick' and name2 = 'Steven'")
         row = self.db.c.fetchone()
         self.assertEqual(0, row[0])
-
-#    def update_game_player
-
-# TODO: Swap contenders
-# TODO: Generate round 1
-# TODO: Generate next round

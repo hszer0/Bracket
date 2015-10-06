@@ -45,3 +45,22 @@ class BracketControlTests(unittest.TestCase):
     def test_add_contender_to_tournament(self):
         self.bracketControl.add_contender(self.tid, "Bart")
         self.assertEqual(["Bart"], self.bracketControl.get_contenders(self.tid, "Bart"))
+
+    def test_get_all_scores_from_tournament(self):
+        result = self.bracketControl.get_scores(self.tid)
+        self.assertEqual(self.tid, result[0].tid)
+        self.assertEqual(self.tid, result[1].tid)
+        self.assertEqual("Patrick", result[0].name1)
+        self.assertEqual("Simone", result[0].name2)
+        self.assertEqual("Steven", result[1].name1)
+        self.assertEqual("Anke", result[1].name2)
+
+    def test_swap_contenders(self):
+        self.bracketControl.swap_contenders(self.tid, "Patrick", "Anke")
+        result = self.bracketControl.get_scores(self.tid)
+        self.assertEqual(self.tid, result[0].tid)
+        self.assertEqual(self.tid, result[1].tid)
+        self.assertEqual("Anke", result[0].name1)
+        self.assertEqual("Simone", result[0].name2)
+        self.assertEqual("Steven", result[1].name1)
+        self.assertEqual("Patrick", result[1].name2)
