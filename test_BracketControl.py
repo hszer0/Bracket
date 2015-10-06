@@ -1,6 +1,7 @@
 import unittest
 from BracketDB import Database
 from BracketControl import BControl
+from Game import Game
 
 
 class BracketControlTests(unittest.TestCase):
@@ -16,8 +17,8 @@ class BracketControlTests(unittest.TestCase):
         self.db.add_contender(self.tid, "Steven")
         self.db.add_contender(self.tid, "Simone")
         self.db.add_contender(self.tid, "Anke")
-        self.db.add_game(self.tid, 0, "Patrick", "Simone")
-        self.db.add_game(self.tid, 0, "Steven", "Anke")
+        self.db.add_game(Game(self.tid, 0, "Patrick", "Simone"))
+        self.db.add_game(Game(self.tid, 0, "Steven", "Anke"))
 
         self.bracketControl = BControl(self.db)
 

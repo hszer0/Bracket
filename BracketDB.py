@@ -39,13 +39,13 @@ class Database():
             "select tid, name from contenders where tid = ? and name like ? order by name", (tid, "%" + s + "%"))
         return self.c.fetchall()
 
-    def add_game(self, tid, rnd, name1, name2):
+    def add_game(self, game):
         self.c.execute("insert into scores (tid, round, name1, name2) values (?, ?, ?, ?)",
-                       (tid, rnd, name1, name2))
+                       (game.tid, game.rnd, game.name1, game.name2))
 
-    def remove_game(self, tid, rnd, name1, name2):
+    def remove_game(self, game):
         self.c.execute("delete from scores where tid = ? and round = ? and name1 = ? and name2 = ?",
-                       (tid, rnd, name1, name2))
+                       (game.tid, game.rnd, game.name1, game.name2))
 
     def get_participants(self, s):
         self.c.execute(
@@ -61,6 +61,6 @@ class Database():
             "select * from scores where tid = ? order by round, name1", (tid,))
         return self.c.fetchall()
 
-    def update_score(self, tid, rnd, name1, name2, score1, score2):
+    def update_score(self, game):
         self.c.execute("update scores set score1 = ?, score2 = ? where tid = ? and round = ? and name1 = ? and name2 = ?",
-                       (score1, score2, tid, rnd, name1, name2))
+                       (game.score1, game.score2, game.tid, game.rnd, game.name1, game.name2))

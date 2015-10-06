@@ -1,5 +1,6 @@
 import unittest
 from BracketDB import Database
+from Game import Game
 
 
 class BracketDBTests(unittest.TestCase):
@@ -74,10 +75,11 @@ class BracketDBTests(unittest.TestCase):
     def test_add_and_remove_game(self):
         # test for adding
         tid = self.db.add_tournament("UT2k4", "2014-01-01")
-        self.db.add_game(tid, 1, "Patrick", "Steven")
+        game = Game(tid, 1, "Patrick", "Steven")
+        self.db.add_game(game)
 
         # test for removing
-        self.db.remove_game(tid, 1, "Patrick", "Steven")
+        self.db.remove_game(game)
         self.db.remove_tournament(tid)
         self.db.c.execute("select * from scores")
         self.assertIsNone(self.db.c.fetchone())
@@ -120,16 +122,19 @@ class BracketDBTests(unittest.TestCase):
 
     def test_get_all_scores_from_tournament(self):
         tid = self.db.add_tournament("UT2k4", "2014-01-01")
-        self.db.add_game(tid, 0, "Patrick", "Steven")
-        self.db.add_game(tid, 0, "Anke", "Simone")
-        self.db.add_game(tid, 1, "Steven", "Anke")
+        self.db.add_game(Game(tid, 0, "Patrick", "Steven"))
+        self.db.add_game(Game(tid, 0, "Anke", "Simone"))
+        self.db.add_game(Game(tid, 1, "Steven", "Anke"))
         self.assertEqual(self.db.get_scores_from_tournament(tid),
                          [(tid, 0, 'Anke', 'Simone', 0, 0), (tid, 0, 'Patrick', 'Steven', 0, 0),
                           (tid, 1, 'Steven', 'Anke', 0, 0)])
 
     def test_update_score(self):
-        self.db.add_game(1, 0, "Patrick", "Steven")
-        self.db.update_score(1, 0, "Patrick", "Steven", 1, 2)
+        game = Game(1, 0, "Patrick", "Steven")
+        self.db.add_game(game)
+        game.setScore1(1)
+        game.setScore2(2)
+        self.db.update_score(game)
         self.db.c.execute(
             "select * from scores where tid = 1 and round = 0 and name1 = 'Patrick' and name2 = 'Steven'")
         row = self.db.c.fetchone()

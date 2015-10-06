@@ -1,3 +1,5 @@
+from Game import Game
+
 class BControl():
 
     def __init__(self, database):
