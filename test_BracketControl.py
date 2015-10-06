@@ -40,3 +40,7 @@ class BracketControlTests(unittest.TestCase):
                      (self.tid, "e", ["Anke", "Simone", "Steven"])):
             with self.subTest():
                 self.assertEqual(case[2], self.bracketControl.get_contenders(case[0], case[1]))
+
+    def test_add_contender_to_tournament(self):
+        self.bracketControl.add_contender(self.tid, "Bart")
+        self.assertEqual(["Bart"], self.bracketControl.get_contenders(self.tid, "Bart"))
