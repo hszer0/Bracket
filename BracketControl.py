@@ -1,4 +1,4 @@
-class BControl(object):
+class BControl():
 
     def __init__(self, database):
         self.database = database

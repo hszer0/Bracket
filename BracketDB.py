@@ -1,7 +1,7 @@
 import sqlite3
 
 
-class Database(object):
+class Database():
 
     def __init__(self, db="bracket.db"):
         conn = sqlite3.connect(db)
