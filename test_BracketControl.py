@@ -26,6 +26,7 @@ class BracketControlTests(unittest.TestCase):
         self.db.c.execute("delete from tournaments")
         self.db.c.execute("delete from contenders")
         self.db.c.execute("delete from scores")
+        self.db.c.execute("update sqlite_sequence set seq = (select max(id) from tournaments) WHERE name='tournaments'")
         self.db.close_connection()
 
     def test_get_participants(self):
