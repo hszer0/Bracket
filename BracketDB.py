@@ -64,3 +64,7 @@ class Database():
     def update_score(self, game):
         self.c.execute("update scores set score1 = ?, score2 = ? where tid = ? and round = ? and name1 = ? and name2 = ?",
                        (game.score1, game.score2, game.tid, game.rnd, game.name1, game.name2))
+
+    def update_game(self, originalGame, changedGame):
+        self.c.execute("update scores set name1 = ?, name2 = ?, score1 = ?, score2 = ? where tid = ? and round = ? and name1 = ? and name2 = ?",
+                       (changedGame.name1, changedGame.name2, changedGame.score1, changedGame.score2, originalGame.tid, originalGame.rnd, originalGame.name1, originalGame.name2))

@@ -141,6 +141,20 @@ class BracketDBTests(unittest.TestCase):
         self.assertEqual(row[4], 1)
         self.assertEqual(row[5], 2)
 
+    def test_update_game_contenders(self):
+        game1 = Game(1, 0, "Patrick", "Steven")
+        game2 = Game(1, 0, "Simone", "Anke")
+        self.db.add_game(game1)
+        self.db.update_game(game1, game2)
+        self.db.c.execute(
+            "select count(*) from scores where tid = 1 and round = 0 and name1 = 'Simone' and name2 = 'Anke'")
+        row = self.db.c.fetchone()
+        self.assertEqual(1, row[0])
+        self.db.c.execute(
+            "select count(*) from scores where tid = 1 and round = 0 and name1 = 'Patrick' and name2 = 'Steven'")
+        row = self.db.c.fetchone()
+        self.assertEqual(0, row[0])
+
 #    def update_game_player
 
 # TODO: Swap contenders
